@@ -46,6 +46,7 @@
     <string name="menu_companion">Pro features</string>
     <string name="menu_readme">Documentation</string>
     <string name="menu_faq">FAQ</string>
+    <string name="menu_rest_api">REST API Settings</string>
     <string name="menu_donate">Donate</string>
 
     <string name="msg_no_service">Module not running or updated</string>
@@ -84,4 +85,14 @@
     </string-array>
 
     <string name="pro_fingerprint" translatable="false">1062ae961d78854f6c9cd872c4388232849c799</string>
+    
+    <!-- REST API -->
+    <string name="permission_label">Control XPrivacyLua</string>
+    <string name="permission_description">Allows the app to control XPrivacyLua privacy settings programmatically</string>
+    <string name="pref_rest_api_enabled">Enable REST API</string>
+    <string name="pref_rest_api_port">REST API Port</string>
+    <string name="pref_rest_api_key">REST API Key</string>
+    <string name="pref_rest_api_key_summary">Authentication key for API access</string>
+    <string name="pref_rest_api_generate_key">Generate New Key</string>
+    <string name="msg_rest_api_key_generated">New API key generated</string>
 </resources>

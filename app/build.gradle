@@ -85,4 +85,8 @@ dependencies {
     // http://www.luaj.org/luaj/3.0/README.html
     // https://mvnrepository.com/artifact/org.luaj/luaj-jse
     // implementation 'org.luaj:luaj-jse:3.0.1'
+    
+    // NanoHTTPD for REST API
+    // https://github.com/NanoHttpd/nanohttpd
+    implementation 'org.nanohttpd:nanohttpd:2.3.1'
 }

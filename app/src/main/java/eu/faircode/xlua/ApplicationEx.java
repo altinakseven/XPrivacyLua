@@ -20,6 +20,9 @@
 package eu.faircode.xlua;
 
 import android.app.Application;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class ApplicationEx extends Application {
@@ -29,5 +32,37 @@ public class ApplicationEx extends Application {
     public void onCreate() {
         super.onCreate();
         Log.i(TAG, "Create version=" + BuildConfig.VERSION_NAME);
+        
+        // Initialize REST API key if not set
+        initializeRestApiKey();
+        
+        // Start REST API service if enabled
+        startRestApiServiceIfEnabled();
+    }
+    
+    private void initializeRestApiKey() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if (!prefs.contains("rest_api_key")) {
+            String apiKey = XRestApiService.generateApiKey();
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("rest_api_key", apiKey);
+            editor.apply();
+            Log.i(TAG, "Generated initial REST API key");
+        }
+    }
+    
+    private void startRestApiServiceIfEnabled() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean enabled = prefs.getBoolean("rest_api_enabled", false);
+        
+        if (enabled) {
+            Intent intent = new Intent(this, XRestApiService.class);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                startForegroundService(intent);
+            } else {
+                startService(intent);
+            }
+            Log.i(TAG, "Started REST API service");
+        }
     }
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="REST API Settings">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="rest_api_enabled"
+            android:title="@string/pref_rest_api_enabled"
+            android:summary="Enable the REST API on localhost (127.0.0.1)" />
+
+        <EditTextPreference
+            android:defaultValue="8271"
+            android:key="rest_api_port"
+            android:title="@string/pref_rest_api_port"
+            android:inputType="number"
+            android:dependency="rest_api_enabled" />
+
+        <EditTextPreference
+            android:key="rest_api_key"
+            android:title="@string/pref_rest_api_key"
+            android:summary="@string/pref_rest_api_key_summary"
+            android:enabled="false"
+            android:dependency="rest_api_enabled" />
+
+        <Preference
+            android:key="generate_api_key"
+            android:title="@string/pref_rest_api_generate_key"
+            android:dependency="rest_api_enabled" />
+    </PreferenceCategory>
+</PreferenceScreen>

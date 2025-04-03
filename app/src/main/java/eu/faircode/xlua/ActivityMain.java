@@ -214,6 +214,13 @@ public class ActivityMain extends ActivityBase {
                     startActivity(browse);
             }
         }));
+        
+        drawerArray.add(new DrawerItem(this, R.string.menu_rest_api, new DrawerItem.IListener() {
+            @Override
+            public void onClick(DrawerItem item) {
+                menuRestApi();
+            }
+        }));
 
         drawerList.setAdapter(drawerArray);
 
@@ -368,6 +375,10 @@ public class ActivityMain extends ActivityBase {
             case R.id.menu_help:
                 menuHelp();
                 return true;
+                
+            case R.id.menu_rest_api:
+                menuRestApi();
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -376,6 +387,10 @@ public class ActivityMain extends ActivityBase {
 
     private void menuHelp() {
         startActivity(new Intent(this, ActivityHelp.class));
+    }
+    
+    private void menuRestApi() {
+        startActivity(new Intent(this, ActivityRestApiSettings.class));
     }
 
     public void updateMenu(Menu menu) {

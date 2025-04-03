@@ -1,0 +1,174 @@
+# XPrivacyLua Project Intelligence
+
+## Critical Implementation Paths
+
+1. **Hook Definition Flow**:
+   - Hook definitions are stored in JSON format
+   - Each definition specifies a class, method, and Lua script
+   - The Xposed module intercepts method calls based on these definitions
+   - The Lua script determines what happens when a hook is triggered
+
+2. **REST API Flow**:
+   - API requests come in through the local HTTP server on 127.0.0.1
+   - Requests are authenticated using the API key
+   - The calling app's permission is verified
+   - The request is processed by the appropriate handler
+   - Changes are applied to XPrivacyLua's settings
+   - A JSON response is returned
+
+3. **Restriction Application Process**:
+   - User enables a restriction for an app
+   - XPrivacyLua identifies all hooks associated with that restriction
+   - When the app calls a restricted method, the corresponding Lua script executes
+   - The script may modify arguments, return fake data, or prevent the operation
+
+4. **Custom Hook Creation**:
+   - Define hook metadata (collection, group, name, etc.)
+   - Specify the target class and method
+   - Write Lua script with before/after functions
+   - Add the hook definition to the system
+
+## User Preferences and Workflow
+
+1. **Simplicity Over Complexity**:
+   - The project prioritizes simplicity and stability over complex features
+   - UI is kept minimal and focused on restriction management
+   - Advanced features are delegated to the pro companion app
+   - The REST API follows this principle with a clean, straightforward design
+
+2. **Privacy vs. Functionality Balance**:
+   - Restrictions are designed to preserve app functionality while protecting privacy
+   - Fake data is preferred over blocking access entirely
+   - Some restrictions are intentionally omitted to prevent app crashes
+
+3. **Extension Over Modification**:
+   - Users are encouraged to extend functionality through custom hooks
+   - The hook repository facilitates sharing and discovery of community-created hooks
+   - Built-in hooks can be copied and modified rather than directly edited
+
+## Project-Specific Patterns
+
+1. **Lua Script Structure**:
+   - Scripts should define `before()` and/or `after()` functions
+   - Functions must return `true` if they modified anything, `false` otherwise
+   - Scripts can access context using `param:getApplicationContext()`
+   - Error handling should be implemented within scripts
+
+2. **REST API Structure**:
+   - API follows RESTful principles with resource-based endpoints
+   - All responses use consistent JSON format
+   - Error handling follows HTTP status code conventions
+   - Authentication is required for all endpoints
+   - API version is included in the URL path
+
+3. **Hook Naming Conventions**:
+   - Collection names represent broad categories (e.g., "Privacy")
+   - Group names represent functional areas (e.g., "Read.Telephony")
+   - Hook names typically follow the pattern "ClassName/methodName"
+
+4. **Special Hook Types**:
+   - Constructor hooks: omit the method name
+   - Field value hooks: prefix method name with "#" (e.g., "#SERIAL")
+   - Field method hooks: use syntax "[field name]:[method name]" (e.g., "CREATOR:createFromParcel")
+
+5. **Settings Management**:
+   - Global settings affect all apps
+   - Per-app settings override global settings
+   - Custom settings can be defined by hooks and accessed via `param:getSetting()`
+
+## Known Challenges
+
+1. **Android Version Compatibility**:
+   - Different Android versions may require different hook implementations
+   - Use `minSdk` and `maxSdk` in hook definitions to target specific versions
+   - Test hooks on multiple Android versions when possible
+
+2. **REST API Security**:
+   - API key must be kept secure and can be rotated if compromised
+   - Only bind to localhost to prevent external access
+   - Verify custom permission to ensure only authorized apps can access the API
+   - Log all API requests for security auditing
+
+3. **System App Handling**:
+   - Persistent system apps require a reboot after hook changes
+   - Non-persistent system apps can be restarted like regular apps
+   - System apps may have different behavior than user apps
+
+4. **Performance Considerations**:
+   - Minimize work done in hook scripts to reduce performance impact
+   - Use caching for frequently accessed data with `param:putValue()` and `param:getValue()`
+   - Be cautious with hooks that execute frequently (e.g., sensor data)
+
+5. **Error Handling**:
+   - Mark hooks as optional (`"optional": true`) if the target method might not exist
+   - Use notifications to alert users of hook errors
+   - Log errors with the `log()` function for debugging
+
+## Evolution of Project Decisions
+
+1. **From XPrivacy to XPrivacyLua**:
+   - Complete rewrite to support newer Android versions
+   - Focus on stability and preventing app crashes
+   - Simplified restriction set compared to XPrivacy
+   - Addition of Lua scripting for extensibility
+
+2. **Feature Selection Criteria**:
+   - Must improve privacy (not just security)
+   - Must not cause apps to crash
+   - Must be generally applicable (not app-specific)
+   - Must be maintainable long-term
+
+3. **Pro Features Strategy**:
+   - Core privacy features remain free
+   - Pro features focus on convenience and advanced functionality
+   - Pro companion app as separate download
+
+## Tool Usage Patterns
+
+1. **Android Studio**:
+   - Standard Android project structure
+   - Gradle-based build system
+   - Java as the primary language
+
+2. **Xposed Framework**:
+   - Hooks are registered during module initialization
+   - Hooks are applied when target apps are loaded
+   - Different Xposed variants (LSPosed, EdXposed) may have different behavior
+
+3. **LuaJ Integration**:
+   - Lua scripts are loaded and compiled at runtime
+   - Scripts have access to Java objects and methods
+   - Global Lua state is not thread-safe; use `param:putValue()` for thread-safe storage
+
+4. **Repository Management**:
+   - Hook definitions in the repo directory follow a standard format
+   - Each hook has a unique identifier (hook_X.json)
+   - The repo/list.json file indexes all available hooks
+
+## Project Navigation Tips
+
+1. **Key Directories**:
+   - `app/src/main/assets/`: Contains built-in hook definitions and scripts
+   - `examples/`: Contains example hook definitions
+   - `repo/`: Contains repository hook definitions
+   - `app/src/main/java/`: Contains the Java source code
+
+2. **Important Files**:
+   - `app/src/main/assets/hooks.json`: Defines the built-in hooks
+   - `README.md`: Overview of the project and features
+   - `DEFINE.md`: Documentation for creating custom hooks
+   - `FAQ.md`: Answers to common questions
+   - `XPRIVACY.md`: Comparison with the original XPrivacy
+
+3. **Code Organization**:
+   - Hook-related classes handle the Xposed integration
+   - UI classes manage the user interface
+   - Utility classes provide helper functions
+   - Lua integration classes bridge between Java and Lua
+   - REST API classes handle HTTP server and request processing
+
+4. **REST API Documentation**:
+   - Comprehensive API documentation is available in [restapi.md](restapi.md)
+   - Each endpoint is documented with request/response examples
+   - Authentication and security considerations are clearly explained
+   - Usage examples are provided for common scenarios
