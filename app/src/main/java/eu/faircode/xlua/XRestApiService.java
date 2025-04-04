@@ -53,6 +53,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+
 import fi.iki.elonen.NanoHTTPD;
 
 public class XRestApiService extends Service {
@@ -158,7 +159,7 @@ public class XRestApiService extends Service {
         
         // Create notification
         Intent intent = new Intent(this, ActivityMain.class);
-        PendingIntent pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         
         Notification notification = new NotificationCompat.Builder(this, "rest_api")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
@@ -315,7 +316,7 @@ public class XRestApiService extends Service {
             JSONArray apps = new JSONArray();
             
             // Get all apps with restrictions
-            List<XApp> xApps = XProvider.getApps(context);
+            List<XApp> xApps = XProvider.getApps(context, null, false);
             for (XApp app : xApps) {
                 JSONObject appJson = new JSONObject();
                 appJson.put("packageName", app.packageName);
@@ -358,7 +359,7 @@ public class XRestApiService extends Service {
                 appJson.put("isSystemApp", (appInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
                 
                 // Get restrictions
-                XApp xApp = XProvider.getApp(context, packageName);
+                XApp xApp = XProvider.getApp(context, packageName, null, false);
                 if (xApp != null) {
                     boolean restricted = false;
                     int restrictionCount = 0;
@@ -394,7 +395,7 @@ public class XRestApiService extends Service {
             
             try {
                 // Get app restrictions
-                XApp xApp = XProvider.getApp(context, packageName);
+                XApp xApp = XProvider.getApp(context, packageName, null, false);
                 if (xApp == null) {
                     return newErrorResponse(Response.Status.NOT_FOUND, "App not found: " + packageName);
                 }
@@ -425,7 +426,7 @@ public class XRestApiService extends Service {
                 boolean enabled = request.getBoolean("enabled");
                 
                 // Get app
-                XApp xApp = XProvider.getApp(context, packageName);
+                XApp xApp = XProvider.getApp(context, packageName, null, false);
                 if (xApp == null) {
                     return newErrorResponse(Response.Status.NOT_FOUND, "App not found: " + packageName);
                 }
@@ -445,7 +446,7 @@ public class XRestApiService extends Service {
                 }
                 
                 // Save changes
-                XProvider.setApp(context, xApp);
+                XProvider.setApp(context, xApp, null);
                 
                 response.put("status", "success");
                 response.put("packageName", packageName);
@@ -519,7 +520,7 @@ public class XRestApiService extends Service {
                 setFakeLocation(packageName, location);
                 
                 // Ensure location restriction is enabled
-                XApp xApp = XProvider.getApp(context, packageName);
+                XApp xApp = XProvider.getApp(context, packageName, null, false);
                 if (xApp != null) {
                     boolean updated = false;
                     for (XAssignment assignment : xApp.assignments) {
@@ -531,7 +532,7 @@ public class XRestApiService extends Service {
                     }
                     
                     if (updated) {
-                        XProvider.setApp(context, xApp);
+                        XProvider.setApp(context, xApp, null);
                     }
                 }
                 

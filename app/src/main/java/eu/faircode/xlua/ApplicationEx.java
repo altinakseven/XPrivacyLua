@@ -22,8 +22,10 @@ package eu.faircode.xlua;
 import android.app.Application;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+import android.os.Build;
 import android.util.Log;
+
+import androidx.preference.PreferenceManager;
 
 public class ApplicationEx extends Application {
     private static final String TAG = "XLua.App";
@@ -57,7 +59,7 @@ public class ApplicationEx extends Application {
         
         if (enabled) {
             Intent intent = new Intent(this, XRestApiService.class);
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 startForegroundService(intent);
             } else {
                 startService(intent);

@@ -22,14 +22,14 @@ package eu.faircode.xlua;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.EditTextPreference;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-import android.preference.SwitchPreference;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.EditTextPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
+import androidx.preference.SwitchPreference;
+
 
 public class ActivityRestApiSettings extends ActivityBase {
     private static final String TAG = "XLua.RestApiSettings";
@@ -41,13 +41,12 @@ public class ActivityRestApiSettings extends ActivityBase {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.pref_rest_api_enabled);
         
-        getFragmentManager().beginTransaction()
+        getSupportFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new RestApiPreferenceFragment())
                 .commit();
     }
-
-    public static class RestApiPreferenceFragment extends PreferenceFragment
-            implements SharedPreferences.OnSharedPreferenceChangeListener {
+public static class RestApiPreferenceFragment extends PreferenceFragmentCompat
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
         
         private SwitchPreference prefEnabled;
         private EditTextPreference prefPort;
@@ -55,10 +54,8 @@ public class ActivityRestApiSettings extends ActivityBase {
         private Preference prefGenerateKey;
         
         @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            
-            addPreferencesFromResource(R.xml.preferences_rest_api);
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            setPreferencesFromResource(R.xml.preferences_rest_api, rootKey);
             
             prefEnabled = (SwitchPreference) findPreference("rest_api_enabled");
             prefPort = (EditTextPreference) findPreference("rest_api_port");

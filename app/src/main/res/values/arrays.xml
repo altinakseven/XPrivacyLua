@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Restriction groups for REST API -->
+    <string-array name="restriction_groups">
+        <item>determine_activity</item>
+        <item>get_applications</item>
+        <item>get_calendars</item>
+        <item>get_call_log</item>
+        <item>get_contacts</item>
+        <item>get_location</item>
+        <item>get_messages</item>
+        <item>get_sensors</item>
+        <item>read_account</item>
+        <item>read_clipboard</item>
+        <item>read_identifiers</item>
+        <item>read_network</item>
+        <item>read_notifications</item>
+        <item>read_sync</item>
+        <item>read_telephony</item>
+        <item>record_audio</item>
+        <item>record_video</item>
+        <item>send_messages</item>
+        <item>use_analytics</item>
+        <item>use_camera</item>
+        <item>use_tracking</item>
+    </string-array>
+</resources>

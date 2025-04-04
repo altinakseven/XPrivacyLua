@@ -1,29 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="REST API Settings">
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="rest_api_enabled"
-            android:title="@string/pref_rest_api_enabled"
-            android:summary="Enable the REST API on localhost (127.0.0.1)" />
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.preference.PreferenceCategory
+        app:title="REST API Settings"
+        app:iconSpaceReserved="false">
+        <androidx.preference.SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:key="rest_api_enabled"
+            app:title="@string/pref_rest_api_enabled"
+            app:summary="Enable the REST API on localhost (127.0.0.1)"
+            app:iconSpaceReserved="false" />
 
-        <EditTextPreference
-            android:defaultValue="8271"
-            android:key="rest_api_port"
-            android:title="@string/pref_rest_api_port"
+        <androidx.preference.EditTextPreference
+            app:defaultValue="8271"
+            app:key="rest_api_port"
+            app:title="@string/pref_rest_api_port"
             android:inputType="number"
-            android:dependency="rest_api_enabled" />
+            app:dependency="rest_api_enabled"
+            app:iconSpaceReserved="false" />
 
-        <EditTextPreference
-            android:key="rest_api_key"
-            android:title="@string/pref_rest_api_key"
-            android:summary="@string/pref_rest_api_key_summary"
-            android:enabled="false"
-            android:dependency="rest_api_enabled" />
+        <androidx.preference.EditTextPreference
+            app:key="rest_api_key"
+            app:title="@string/pref_rest_api_key"
+            app:summary="@string/pref_rest_api_key_summary"
+            app:enabled="false"
+            app:dependency="rest_api_enabled"
+            app:iconSpaceReserved="false" />
 
-        <Preference
-            android:key="generate_api_key"
-            android:title="@string/pref_rest_api_generate_key"
-            android:dependency="rest_api_enabled" />
-    </PreferenceCategory>
-</PreferenceScreen>
+        <androidx.preference.Preference
+            app:key="generate_api_key"
+            app:title="@string/pref_rest_api_generate_key"
+            app:dependency="rest_api_enabled"
+            app:iconSpaceReserved="false" />
+    </androidx.preference.PreferenceCategory>
+</androidx.preference.PreferenceScreen>
